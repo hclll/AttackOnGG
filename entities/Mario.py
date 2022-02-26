@@ -20,8 +20,13 @@ import os
 
 
 class Mario(EntityBase):
-    def __init__(self, x, y, level, screen, dashboard, sound, windowSize, menu, gravity=0.8):
+    def __init__(self, x, y, level, screen, dashboard, sound, windowSize, menu, pos2mario, gravity=0.8):
         self.menu = menu
+
+        self.noImage = pygame.image.load("./img/transparent.png")
+        self.noImage.convert()
+        self.noImage = pygame.transform.scale(self.noImage, (32, 32))
+
         if self.menu.choosenPlayer == "Mario":
             super(Mario, self).__init__(x, y, gravity)
         else:
@@ -48,6 +53,11 @@ class Mario(EntityBase):
                 spriteCollection["mario_big_idle"].image,
                 spriteCollection["mario_big_jump"].image,
             )
+            self.noAnimation = Animation(
+                [self.noImage],
+                self.noImage,
+                self.noImage
+            )
         else:
             self.smallAnimation = Animation(
                 [self.image],
@@ -59,6 +69,11 @@ class Mario(EntityBase):
                 [self.bigimage],
                 self.bigimage,
                 self.bigimage
+            )
+            self.noAnimation = Animation(
+                [self.noImage],
+                self.noImage,
+                self.noImage
             )
         self.camera = Camera(self.rect, self)
         self.sound = sound
@@ -95,6 +110,8 @@ class Mario(EntityBase):
         self.pre_shoot = -self.t_wait
         self.pre_fence = -self.t_wait
         self.pre_loseLife = -self.t_wait
+
+        self.pos2mario = pos2mario
 
         #self.life = 3
 
